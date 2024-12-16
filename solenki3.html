@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #golemko {
+        display: flex;
+        gap: 150px;
+    }
+
+    div {
+        margin-bottom: 15px;
+    }
+
+    input {
+        width: 200px
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    select {
+        width: 208px;
+        text-align: center;
+    }
+
+    #prazanProstor {
+        display: flex;
+        gap: 20px;
+    }
+
+    #prazanProstor div {
+        text-align: center;
+    }
+
+    #prazanProstor button {
+        width: 50px;
+    }
+
+</style>
+<body>
+
+<h1>User Cards</h1>
+<div id="golemko">
+
+    <div id="labels">
+        <div>
+            <label for="username">Username</label>
+        </div>
+        <div>
+            <label for="width">Width</label>
+        </div>
+        <div>
+            <label for="height">Height</label>
+        </div>
+        <div>
+            <label for="cardID">CardID</label>
+        </div>
+        <div>
+            <label for="color">Color</label>
+        </div>
+        <div>
+            <button onclick="create()">Create</button>
+        </div>
+        <p>Total Value of sold cards: <span id="soldCards">0</span></p>
+    </div>
+    <div id="forma">
+        <div>
+            <input id="username" type="text">
+        </div>
+        <div>
+            <input id="width" type="number">px
+        </div>
+        <div>
+            <input id="height" type="number">px
+        </div>
+        <div>
+            <input id="cardID" type="text">
+        </div>
+        <div>
+            <select id="color">
+                <option>red</option>
+                <option>green</option>
+                <option>blue</option>
+                <option>yellow</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div id="prazanProstor"></div>
+</body>
+<script>
+
+    let total_sold=0;
+    total_sold=parseInt(total_sold)
+    function create() {
+        let username = document.getElementById("username").value
+        let width = document.getElementById("width").value
+        let height = document.getElementById("height").value
+        let cardID = document.getElementById("cardID").value
+        let color = document.getElementById("color").value
+        height = parseInt(height)
+        width = parseInt(width)
+        let vrednost = width * height
+        vrednost = parseInt(vrednost)
+        vrednost = vrednost / 2;
+        if (color === "green") {
+            vrednost += 1000;
+        }
+
+        if (username.length === 0 || color.length === 0 || cardID.length === 0 || height.length === 0 || width.length === 0) {
+            alert("Please fill out all of the input fields")
+            return;
+        }
+
+        if (width < 0 || width > 350 || height < 0 || height > 350) {
+            alert("Vnesovte nevalidni podatoci, try again")
+            return;
+        }
+        let check=document.getElementById(username)
+        let karticka = "<div style='background-color: " + color + ";width: " + width + "px;height: " + height + "px' id=" + username + " >" +
+            "<p>ID: " + cardID + " </p><p>Width: " + width + " px </p><p>Height: " + height + " px</p><p class='cenaB'>Value: " + vrednost + " </p><button onclick='sell(this)'>Sell</button></div>";
+        if(check!=null){
+            check.outerHTML = karticka
+        }else{
+            let ekran = document.getElementById("prazanProstor")
+            ekran.innerHTML += karticka
+        }
+    }
+    function sell(obj){
+        let karticka=obj.parentNode
+        let ceni4ka=parseInt(karticka.getElementsByClassName("cenaB")[0].innerHTML.split(":")[1])
+        let ekran4e=document.getElementById("soldCards")
+        console.log(ceni4ka)
+        parseInt(ekran4e)
+        total_sold=parseInt(total_sold+ceni4ka)
+        ekran4e.innerHTML=total_sold
+        karticka.remove();
+    }
+</script>
+</html>

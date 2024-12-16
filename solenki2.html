@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    h1 {
+        display: flex;
+        justify-content: center;
+    }
+
+    #celo {
+        display: flex;
+        gap: 80px;
+    }
+
+    input {
+        width: 250px;
+    }
+
+    #celo div {
+        margin-bottom: 10px;
+    }
+
+    select {
+        width: 255px;
+        text-align: center;
+    }
+
+    th, td {
+        border: 3px solid yellow;
+        padding: 12px;
+    }
+
+    table {
+        background-color: deeppink;
+        border-collapse: collapse;
+    }
+
+</style>
+<body>
+
+<h1>Online Classes</h1>
+
+<div id="celo">
+
+    <div id="iminja">
+        <div>
+            <label for="name">Name and Surname</label>
+        </div>
+        <div>
+            <label for="email">Email</label>
+        </div>
+        <div>
+            <label for="age">Age</label>
+        </div>
+        <div>
+            <label for="username">Username</label>
+        </div>
+        <div>
+            <label for="password">Password</label>
+        </div>
+        <div>
+            <label for="role">Role</label>
+        </div>
+        <div>
+            <button id="add" onclick="dodadi()">Add</button>
+        </div>
+        <div>
+            <p>Available Teachers: <span id="nastavnici">0</span></p>
+        </div>
+    </div>
+
+    <div id="form">
+        <div>
+            <input id="name" type="text">
+        </div>
+        <div>
+            <input id="email" type="text">
+        </div>
+        <div>
+            <input id="age" type="number">
+        </div>
+        <div>
+            <input id="username" type="text">
+        </div>
+        <div>
+            <input id="password" type="password">
+        </div>
+        <div>
+            <select id="role">
+                <option>Student</option>
+                <option>Teacher</option>
+            </select>
+        </div>
+
+    </div>
+
+</div>
+
+<div>
+    <table id="tabela">
+        <tr>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+</div>
+
+<script>
+    var available_teachers = 0;
+
+    function dodadi() {
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var age = document.getElementById("age").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var role = document.getElementById("role").value;
+
+        if (name.length === 0 || email.length === 0 || username.length === 0 || age.length === 0 || password.length === 0) {
+            alert("Please fill out the whole form")
+            return
+        }
+
+        if (password.length<10){
+            alert("Password minimum is 10 characters")
+            return;
+        }
+
+        var check=document.getElementById(username)
+        if(check!=null){
+            alert("Veke postoi takov korisnik")
+            return;
+        }
+        var golema=false;
+        var znak=false;
+        var brojce=false;
+        for (let i = 0; i < password.length; i++) {
+            var character=password.charAt(i);
+            if (character==="!"||character==="@"||character==="#"||character==="$"||character==="%"||character==="^"||
+                character==="&"||character==="*"||character==="`"){
+                znak=true;
+            }
+            if (character===character.toUpperCase()){
+                golema=true;
+            }
+            if (!isNaN(character*1)){
+                brojce=true;
+            }
+        }
+
+        if (!golema||!znak||!brojce){
+            alert("Lozinkata mora da sodrzi golema bukva, broj i poseben znak")
+            return;
+        }
+
+        parseInt(age)
+        if (role === "Student") {
+            var tabelka = document.getElementById("tabela")
+            var redica = "<tr style='background-color: cyan' id=" + username + "><td>" + name + "</td><td>" + username + "</td><td>" + email + "</td>" +
+                "<td>" + age + "</td><td>" + role + "</td></tr>"
+            tabelka.innerHTML += redica
+        }
+        if (role === "Teacher" && age>=18) {
+            var tabelka = document.getElementById("tabela")
+            var redica = "<tr style='background-color: lawngreen' id=" + username + "><td>" + name + "</td><td>" + username + "</td><td>" + email + "</td>" +
+                "<td>" + age + "</td><td>" + role + "</td><td><button onclick='hire(this)'>Hire</td></tr>"
+            tabelka.innerHTML += redica
+            available_teachers++
+            var teachers_ekran = document.getElementById("nastavnici")
+            teachers_ekran.innerHTML=available_teachers
+        }else if (role === "Teacher" && age<18){
+            alert("Mora da ima barem 18 godini")
+            return;
+        }
+    }
+    function hire(obj){
+        var redica=obj.parentNode.parentNode
+        available_teachers--
+        var teachers_ekran = document.getElementById("nastavnici")
+        teachers_ekran.innerHTML=available_teachers
+        redica.style.backgroundColor="gray"
+        obj.remove()
+    }
+</script>
+
+
+</body>
+</html>

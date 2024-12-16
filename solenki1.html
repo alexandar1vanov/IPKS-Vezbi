@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    h1 {
+        display: flex;
+        justify-content: center;
+    }
+
+    div {
+        margin-bottom: 10px;
+    }
+
+    td, th {
+        border: 2px solid deeppink;
+        padding: 5px;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+    #tabelicki{
+        display: flex;
+        justify-content: space-around;
+    }
+
+</style>
+<body>
+
+<h1>Online Shop</h1>
+
+<div id="forma">
+    <div>
+        <label for="name">Name and Surname: </label><input type="text" id="name">
+    </div>
+    <div>
+        <label for="item">Item: </label><input type="text" id="item">
+    </div>
+    <div>
+        <label for="item_code">Item code: </label><input type="text" id="item_code">
+    </div>
+    <div>
+        <label for="item_description">Item Description: </label><input type="text" id="item_description">
+    </div>
+    <div>
+        <label for="price">Price: </label><input type="number" id="price">
+    </div>
+    <div>
+        <label for="used">Used: </label><select id="used">
+        <option>Used</option>
+        <option>Unused</option>
+    </select>
+    </div>
+    <div>
+        <button id="add" onclick="add()">Add</button>
+        <p>Active Items: <span id="active_items">0</span></p>
+        <p>Suma: <span id="sum">0</span></p>
+    </div>
+
+</div>
+<div id="tabelicki">
+    <div id="used_items">
+        <h3>Used items</h3>
+        <table id="used_tabela">
+            <tr>
+                <th>Name</th>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Code</th>
+                <th>Number</th>
+                <th>Actions</th>
+            </tr>
+        </table>
+    </div>
+    <div id="unused_items">
+        <h3>Unsed items</h3>
+        <table id="unused_tabela">
+            <tr>
+                <th>Name</th>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Code</th>
+                <th>Number</th>
+                <th>Actions</th>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    var total_items = 0;
+    var total_sum = 0;
+    function add() {
+        let name = document.getElementById("name").value;
+        let item = document.getElementById("item").value;
+        let item_code = document.getElementById("item_code").value;
+        let item_description = document.getElementById("item_description").value;
+        let price = document.getElementById("price").value;
+        let used = document.getElementById("used").value;
+
+        if (name.length === 0 || item.length === 0 || item_code.length === 0 || item_description.length === 0 || price.length === 0) {
+            alert("Ne se vneseni SITE PODATOCI")
+            return;
+        }
+
+        if (price<0){
+            alert("Nevalidna Suma")
+            return;
+        }
+
+        let check = document.getElementById(item_code);
+        if (check != null) {
+            alert("Веќе постои предмет со овој код!");
+            return;
+        }
+
+        price = parseInt(price * 1.1)
+        total_sum+=price
+        var kataloski_broj = item_code;
+
+        kataloski_broj=kataloski_broj.replaceAll("!","")
+        for (let i = 0; i < 10; i++) {
+            kataloski_broj = kataloski_broj.replaceAll(i, "")
+        }
+
+        parseInt(total_items)
+        total_items++
+        var active = document.getElementById("active_items")
+        active.innerHTML = total_items
+        var totalna_suma=document.getElementById("sum")
+        totalna_suma.innerHTML=total_sum
+
+        if (used === "Used") {
+            var tabelka = document.getElementById("used_tabela")
+            var redica = "<tr id="+item_code+"><td>" + name + "</td><td>" + item + "</td><td>" + price + "</td><td>" + item_code + "</td><td>"
+                + kataloski_broj + "</td><td><button onclick='sell(this)'>Sold</button></td></tr>"
+            tabelka.innerHTML += redica
+        }
+
+        if (used === "Unused") {
+            var tabelka = document.getElementById("unused_tabela")
+            var redica = "<tr id="+item_code+"><td>" + name + "</td><td>" + item + "</td><td>" + price + "</td><td>" + item_code + "</td><td>"
+                + kataloski_broj + "</td><td><button onclick='sell(this)'>Sold</button></td></tr>"
+            tabelka.innerHTML += redica
+        }
+
+
+    }
+
+    function sell(obj) {
+        var redica = obj.parentNode.parentNode
+        var price = parseInt(redica.cells[2].innerText);
+        total_sum -= price;
+        redica.style.backgroundColor = "yellow"
+        total_items--
+        var active = document.getElementById("active_items")
+        active.innerHTML = total_items
+        var totalna_suma=document.getElementById("sum")
+        totalna_suma.innerHTML=total_sum
+        obj.remove()
+    }
+
+
+</script>
+
+
+</body>
+</html>
